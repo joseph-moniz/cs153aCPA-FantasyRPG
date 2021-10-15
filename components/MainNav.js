@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -44,6 +44,7 @@ const MyStack = () => {
 };
 
 const HomeScreen = ({ navigation }) => {
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -84,6 +85,54 @@ const CreateProfileScreen = ({ navigation }) => {
   const [difficulty, setDifficulty] = useState('');
   const [characterName, setCharacterName] = useState('');
   const [characterClass, setCharacterClass] = useState('');
+
+  // const storedInfo = {name: name, difficulty: difficulty, characterName: characterName, characterClass: characterClass}
+  //
+  // useEffect(() => {getData()}
+  //          ,[])
+  //
+  //  const storeData = async (value) => {
+  //        try {
+  //          const jsonValue = JSON.stringify(value)
+  //          await AsyncStorage.setItem('profile_and_character_info', jsonValue)
+  //        } catch (e) {
+  //          console.dir(e)
+  //        }
+  //  }
+  //
+  //  const getData = async () => {
+  //       try {
+  //         // the '@profile_info' can be any string
+  //         const jsonValue = await AsyncStorage.getItem('profile_and_character_info')
+  //         let data = null
+  //         if (jsonValue!=null) {
+  //           data = JSON.parse(jsonValue)
+  //           setName(data.name)
+  //           setDifficulty(data.difficulty)
+  //           setCharacterName(data.characterName)
+  //           setCharacterClass(data.characterClass)
+  //
+  //         } else {
+  //           setName("")
+  //           setDifficulty("")
+  //           setCharacterName("")
+  //           setCharacterClass("")
+  //         }
+  //
+  //       } catch(e) {
+  //         console.log("error in getData")
+  //         console.dir(e)
+  //         // error reading value
+  //       }
+  //  }
+  //
+  //  const clearAll = async () => {
+  //        try {
+  //          await AsyncStorage.clear()
+  //        } catch(e) {
+  //          console.dir(e)
+  //        }
+  //  }
 
   return (
     <View style={styles.container}>
@@ -280,11 +329,17 @@ const CreateProfileScreen = ({ navigation }) => {
           onChangeText={text => {setCharacterName(text)}}
           />
         </View>
-        <View style={{flex:4, alignItems:'center'}}>
+        <View style={{flex:4, flexDirection:'row', justifyContent:'space-evenly'}}>
           <Button
-            title="Done"
+            title="View Profile"
             onPress={() =>
               navigation.navigate('Game', {name: name, difficulty: difficulty, characterName: characterName, characterClass: characterClass})
+            }
+          />
+          <Button
+            title="Clear"
+            onPress={() =>
+              clearAll()
             }
           />
         </View>

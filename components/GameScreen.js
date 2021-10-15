@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image, } from 'react-native';
+import { StyleSheet, Text, View, Image, Button} from 'react-native';
 
 import Profile from './Profile'
 import Character from './Character'
@@ -19,6 +19,14 @@ const GameScreen = ({ navigation, route }) => {
         </View>
         <View style={{flex:2}}>
         </View>
+      </View>
+      <View style = {{flex:0.25, alignItems:'center'}}>
+      <Button
+        title="Home"
+        onPress={() =>
+          navigation.navigate('Home')
+        }
+      />
       </View>
     </View>
   );
