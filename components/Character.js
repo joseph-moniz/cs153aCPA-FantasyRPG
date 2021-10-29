@@ -13,8 +13,8 @@ const Character = (props) => {
   "https://i.pinimg.com/originals/00/65/3d/00653d68b2eb0407ccc4967c60ad9ce8.jpg"
 ]
 
-  const [characterName, setCharacterName] = useState(props.characterName);
-  const [characterClass, setCharacterClass] = useState(props.characterClass);
+  const [characterName, setCharacterName] = useState("");
+  const [characterClass, setCharacterClass] = useState("");
   const [level, setLevel] = useState(1);
   const [exp, setExp] = useState(0);
   const [expForLevel, setExpForLevel] = useState(200);
@@ -44,6 +44,8 @@ const Character = (props) => {
             ,[])
 
   useEffect(() => {
+    setCharacterName(props.characterName)
+    setCharacterClass(props.characterClass)
     getColor(characterClass)
     getStats(characterClass)
     getImageListIndex(characterClass)
@@ -183,7 +185,6 @@ const Character = (props) => {
 
   //CURRENT
   const getImageListIndex = (type) => {
-    let imageListIndex = 0;
     if (type == "Warrior") {
       setImageListIndex(0);
     }
@@ -235,8 +236,8 @@ const Character = (props) => {
           let data = null
           if (jsonValue!=null) {
             data = JSON.parse(jsonValue)
-            setCharacterName(props.characterName)
-            setCharacterClass(props.characterClass)
+            setCharacterName(data.characterName)
+            setCharacterClass(data.characterClass)
             setLevel(data.level)
             setExp(data.exp)
             setExpForLevel(data.expForLevel)
@@ -256,8 +257,8 @@ const Character = (props) => {
             setColor(data.color)
             setImageListIndex(data.imageListIndex)
           } else {
-            setCharacterName(props.characterName)
-            setCharacterClass(props.characterClass)
+            setCharacterName("")
+            setCharacterClass("")
             setLevel(1)
             setExp(0)
             setExpForLevel(200)
@@ -292,7 +293,6 @@ const Character = (props) => {
            console.dir(e)
          }
    }
-
 
 
   return (
@@ -338,7 +338,16 @@ const Character = (props) => {
           </Text>
         </View>
       </View>
-  </View>
+
+    </View>
+    // <Button
+    //   title="Clear"
+    //   onPress={() =>
+    //     clearAll()
+    //   }
+    // />
+
+
 
   );
 }

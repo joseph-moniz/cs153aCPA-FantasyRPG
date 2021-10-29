@@ -2,13 +2,15 @@ import * as React from 'react';
 import { useState, useEffect } from "react";
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { StyleSheet, Text, TextInput, View, Button, Image} from 'react-native';
 
 import AboutScreen from './About'
 import GameScreen from './GameScreen'
-import Profile from './Profile'
+//import Profile from './Profile'
 import Character from './Character'
+//import { usernameGlobal, setUsernameGlobal } from './global'
 
 
 const Stack = createNativeStackNavigator();
@@ -44,6 +46,7 @@ const MyStack = () => {
 };
 
 const HomeScreen = ({ navigation }) => {
+  //const [newProfileExists, setNewProfileExists] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -81,58 +84,62 @@ const HomeScreen = ({ navigation }) => {
 };
 
 const CreateProfileScreen = ({ navigation }) => {
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [difficulty, setDifficulty] = useState('');
   const [characterName, setCharacterName] = useState('');
   const [characterClass, setCharacterClass] = useState('');
 
-  // const storedInfo = {name: name, difficulty: difficulty, characterName: characterName, characterClass: characterClass}
-  //
-  // useEffect(() => {getData()}
-  //          ,[])
-  //
-  //  const storeData = async (value) => {
-  //        try {
-  //          const jsonValue = JSON.stringify(value)
-  //          await AsyncStorage.setItem('profile_and_character_info', jsonValue)
-  //        } catch (e) {
-  //          console.dir(e)
-  //        }
-  //  }
-  //
-  //  const getData = async () => {
-  //       try {
-  //         // the '@profile_info' can be any string
-  //         const jsonValue = await AsyncStorage.getItem('profile_and_character_info')
-  //         let data = null
-  //         if (jsonValue!=null) {
-  //           data = JSON.parse(jsonValue)
-  //           setName(data.name)
-  //           setDifficulty(data.difficulty)
-  //           setCharacterName(data.characterName)
-  //           setCharacterClass(data.characterClass)
-  //
-  //         } else {
-  //           setName("")
-  //           setDifficulty("")
-  //           setCharacterName("")
-  //           setCharacterClass("")
-  //         }
-  //
-  //       } catch(e) {
-  //         console.log("error in getData")
-  //         console.dir(e)
-  //         // error reading value
-  //       }
-  //  }
-  //
-  //  const clearAll = async () => {
-  //        try {
-  //          await AsyncStorage.clear()
-  //        } catch(e) {
-  //          console.dir(e)
-  //        }
-  //  }
+  const storedInfo = {username: username, difficulty: difficulty, characterName: characterName, characterClass: characterClass}
+
+  useEffect(() => {getData()}
+           ,[])
+
+  useEffect(() => {
+    storeData(storedInfo)
+  });
+
+   const storeData = async (value) => {
+         try {
+           const jsonValue = JSON.stringify(value)
+           await AsyncStorage.setItem('profile_and_character_info', jsonValue)
+         } catch (e) {
+           console.dir(e)
+         }
+   }
+
+   const getData = async () => {
+        try {
+          // the '@profile_info' can be any string
+          const jsonValue = await AsyncStorage.getItem('profile_and_character_info')
+          let data = null
+          if (jsonValue!=null) {
+            data = JSON.parse(jsonValue)
+            setUsername(data.username)
+            setDifficulty(data.difficulty)
+            setCharacterName(data.characterName)
+            setCharacterClass(data.characterClass)
+
+          } else {
+            setUsername("")
+            setDifficulty("")
+            setCharacterName("")
+            setCharacterClass("")
+          }
+
+        } catch(e) {
+          console.log("error in getData")
+          console.dir(e)
+          // error reading value
+        }
+   }
+
+   const clearAll = async () => {
+         try {
+           await AsyncStorage.clear()
+         } catch(e) {
+           console.dir(e)
+         }
+   }
 
   return (
     <View style={styles.container}>
@@ -150,7 +157,7 @@ const CreateProfileScreen = ({ navigation }) => {
           </View>
           <View style={{flex:1, justifyContent:'center'}}>
             <TextInput style={{fontSize:14}} placeholder="Enter Username"
-            onChangeText={text => {setName(text)}}
+            onChangeText={text => {setUsername(text)}}
             />
           </View>
           <View style={{flex:8}}>
@@ -333,7 +340,7 @@ const CreateProfileScreen = ({ navigation }) => {
           <Button
             title="View Profile"
             onPress={() =>
-              navigation.navigate('Game', {name: name, difficulty: difficulty, characterName: characterName, characterClass: characterClass})
+              navigation.navigate('Game', {username: username, difficulty: difficulty, characterName: characterName, characterClass: characterClass})
             }
           />
           <Button
