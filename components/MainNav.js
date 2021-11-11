@@ -8,6 +8,7 @@ import { StyleSheet, Text, TextInput, View, Button, Image} from 'react-native';
 
 import AboutScreen from './About'
 import GameScreen from './GameScreen'
+import BattleScreen from './BattleScreen'
 //import Profile from './Profile'
 import Character from './Character'
 //import { usernameGlobal, setUsernameGlobal } from './global'
@@ -39,6 +40,11 @@ const MyStack = () => {
            component={GameScreen}
          />
 
+         <Stack.Screen
+           name="Battle"
+           component={BattleScreen}
+         />
+
 
       </Stack.Navigator>
     </NavigationContainer>
@@ -46,7 +52,6 @@ const MyStack = () => {
 };
 
 const HomeScreen = ({ navigation }) => {
-  //const [newProfileExists, setNewProfileExists] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -341,6 +346,13 @@ const CreateProfileScreen = ({ navigation }) => {
             title="View Profile"
             onPress={() =>
               navigation.navigate('Game', {username: username, difficulty: difficulty, characterName: characterName, characterClass: characterClass})
+            }
+          />
+          <Button
+            title="Battle"
+            color='red'
+            onPress={() =>
+              navigation.navigate('Battle', {characterName: characterName, characterClass: characterClass})
             }
           />
           <Button

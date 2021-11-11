@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Image, Button} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Character from './Character'
 //import { usernameGlobal } from './global.js'
+
 
 const GameScreen = ({ navigation, route }) => {
   const { username }=route.params;
@@ -25,6 +28,19 @@ const GameScreen = ({ navigation, route }) => {
     color = "darkred";
   }
 
+let character2Class = "Cleric";
+if (characterClass == 'Cleric') {
+  character2Class = 'Warrior';
+}
+
+const character1 =  <Character characterName={characterName} characterClass={characterClass} battleView = {false}/>
+const character2 =  <Character characterName='Ally' characterClass={character2Class} battleView = {false}/>
+
+
+const character1Battle =  <Character characterName={characterName} characterClass={characterClass} battleView = {true}/>
+const character2Battle =  <Character characterName='Ally' characterClass={character2Class} battleView = {true}/>
+
+
   return (
     <View style={styles.container}>
       <View style={{flex:0.5, alignItems:'center'}}>
@@ -42,12 +58,12 @@ const GameScreen = ({ navigation, route }) => {
       </View>
       <View style={{flex:3, flexDirection:'row'}}>
         <View style={{flex:1}}>
-          <Character characterName={characterName} characterClass={characterClass} />
+          {character1}
         </View>
         <View style={{flex:2}}>
         </View>
       </View>
-      <View style = {{flex:0.25, alignItems:'center'}}>
+      <View style = {{flex:0.25, alignItems:'center', justifyContent:'center', flexDirection:'row'}}>
       <Button
         title="Home"
         onPress={() =>
@@ -58,6 +74,8 @@ const GameScreen = ({ navigation, route }) => {
     </View>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   container: {

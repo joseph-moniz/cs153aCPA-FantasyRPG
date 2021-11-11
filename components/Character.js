@@ -18,8 +18,10 @@ const Character = (props) => {
   const [level, setLevel] = useState(1);
   const [exp, setExp] = useState(0);
   const [expForLevel, setExpForLevel] = useState(200);
-  const [hp, setHP] = useState(0);
-  const [mana, setMana] = useState(0);
+  const [currHP, setCurrHP] = useState(0);
+  const [maxHP, setMaxHP] = useState(0);
+  const [currMana, setCurrMana] = useState(0);
+  const [maxMana, setMaxMana] = useState(0);
   const [attack, setAttack] = useState(0);
   const [defense, setDefense] = useState(0);
   const [magicalAttack, setMagicalAttack] = useState(0);
@@ -35,10 +37,10 @@ const Character = (props) => {
   const [color, setColor] = useState("");
   const [imageListIndex, setImageListIndex] = useState(0);
 
-  const storedInfo = {characterName: characterName, characterClass: characterClass, level: level, exp: exp, expForLevel: expForLevel,
-                      hp: hp, mana: mana, attack: attack, defense: defense, magicalAttack: magicalAttack, magicalDefense: magicalDefense,
-                      speed: speed, gearHead: gearHead, gearBody: gearBody, gearLegs: gearLegs, gearFeet: gearFeet, item1: item1, item2: item2,
-                      color: color, imageListIndex: imageListIndex}
+  const storedInfo = {characterName: characterName, characterClass: characterClass, level: level, exp: exp,expForLevel: expForLevel,
+                      currHP: currHP, maxHP: maxHP, currMana: currMana, maxMana: maxMana, attack: attack, defense: defense,
+                      magicalAttack: magicalAttack, magicalDefense: magicalDefense, speed: speed, gearHead: gearHead, gearBody: gearBody,
+                      gearLegs: gearLegs, gearFeet: gearFeet, item1: item1, item2: item2, color: color, imageListIndex: imageListIndex}
 
   useEffect(() => {getData()}
             ,[])
@@ -46,9 +48,9 @@ const Character = (props) => {
   useEffect(() => {
     setCharacterName(props.characterName)
     setCharacterClass(props.characterClass)
-    getColor(characterClass)
-    getStats(characterClass)
-    getImageListIndex(characterClass)
+    assignColor(characterClass)
+    assignStats(characterClass)
+    assignImageListIndex(characterClass)
     storeData(storedInfo)
   });
 
@@ -70,7 +72,7 @@ const Character = (props) => {
   // }
 
   //CURRENT
-  const getColor = (type) => {
+  const assignColor = (type) => {
     if (type == "Warrior") {
       setColor("orange")
     }
@@ -135,10 +137,12 @@ const Character = (props) => {
   // }
 
   //CURRENT
-  const getStats = (type) => {
+  const assignStats = (type) => {
     if (type == "Warrior") {
-      setHP(12)
-      setMana(8)
+      setCurrHP(12)
+      setMaxHP(12)
+      setCurrMana(8)
+      setMaxMana(8)
       setAttack(8)
       setDefense(8)
       setMagicalAttack(4)
@@ -146,8 +150,10 @@ const Character = (props) => {
       setSpeed(6)
     }
     else if (type == "Tank") {
-      setHP(14)
-      setMana(9)
+      setCurrHP(14)
+      setMaxHP(14)
+      setCurrMana(9)
+      setMaxMana(9)
       setAttack(3)
       setDefense(9)
       setMagicalAttack(3)
@@ -155,8 +161,10 @@ const Character = (props) => {
       setSpeed(3)
     }
     else if (type == "Mage") {
-      setHP(10)
-      setMana(10)
+      setCurrHP(10)
+      setMaxHP(10)
+      setCurrMana(10)
+      setMaxMana(10)
       setAttack(3)
       setDefense(3)
       setMagicalAttack(10)
@@ -164,8 +172,10 @@ const Character = (props) => {
       setSpeed(8)
     }
     else if (type == "Assassin") {
-      setHP(10)
-      setMana(8)
+      setCurrHP(10)
+      setMaxHP(10)
+      setCurrMana(8)
+      setMaxMana(8)
       setAttack(11)
       setDefense(3)
       setMagicalAttack(5)
@@ -173,8 +183,10 @@ const Character = (props) => {
       setSpeed(10)
     }
     else if (type == "Cleric") {
-      setHP(11)
-      setMana(10)
+      setCurrHP(11)
+      setMaxHP(11)
+      setCurrMana(10)
+      setMaxMana(10)
       setAttack(2)
       setDefense(4)
       setMagicalAttack(8)
@@ -184,7 +196,7 @@ const Character = (props) => {
   }
 
   //CURRENT
-  const getImageListIndex = (type) => {
+  const assignImageListIndex = (type) => {
     if (type == "Warrior") {
       setImageListIndex(0);
     }
@@ -220,6 +232,7 @@ const Character = (props) => {
   //   imageListIndex = 4;
   // }
 
+
    const storeData = async (value) => {
          try {
            const jsonValue = JSON.stringify(value)
@@ -241,8 +254,10 @@ const Character = (props) => {
             setLevel(data.level)
             setExp(data.exp)
             setExpForLevel(data.expForLevel)
-            setHP(data.hp)
-            setMana(data.mana)
+            setCurrHP(data.currHP)
+            setMaxHP(data.maxHP)
+            setCurrMana(data.currMana)
+            setMaxMana(data.maxMana)
             setAttack(data.attack)
             setDefense(data.defense)
             setMagicalAttack(data.magicalAttack)
@@ -259,11 +274,14 @@ const Character = (props) => {
           } else {
             setCharacterName("")
             setCharacterClass("")
+            setBattleView(false)
             setLevel(1)
             setExp(0)
             setExpForLevel(200)
-            setHP(0)
-            setMana(0)
+            setCurrHP(0)
+            setMaxHP(0)
+            setCurrMana(0)
+            setMaxMana(0)
             setAttack(0)
             setDefense(0)
             setMagicalAttack(0)
@@ -294,9 +312,13 @@ const Character = (props) => {
          }
    }
 
+  const battleView = props.battleView;
 
-  return (
-  <View style={styles.container}>
+
+  let characterView = "";
+  if (battleView == false) {
+    characterView =
+    <View style={styles.container}>
       <View style={{flex:1}}>
         <View style={{flex:2}}>
           <Text style={{fontSize:24, fontWeight:'bold'}}>
@@ -321,8 +343,8 @@ const Character = (props) => {
           <Text style={{fontSize:14, paddingHorizontal:15}}>
             <Text style={{fontWeight:'bold'}}>Level</Text>: {level}{"\n"}
             <Text style={{fontWeight:'bold'}}>Exp</Text>: {exp}/{expForLevel}{"\n"}
-            <Text style={{fontWeight:'bold', color: 'green'}}>HP</Text>: {hp}{"\n"}
-            <Text style={{fontWeight:'bold', color: 'darkblue'}}>Mana</Text>: {mana}{"\n"}
+            <Text style={{fontWeight:'bold', color: 'green'}}>HP</Text>: {currHP}/{maxHP}{"\n"}
+            <Text style={{fontWeight:'bold', color: 'darkblue'}}>Mana</Text>: {currMana}/{maxMana}{"\n"}
             <Text style={{fontWeight:'bold', color: 'red'}}>Attack</Text>: {attack}{"\n"}
             <Text style={{fontWeight:'bold', color: 'blue'}}>Defense</Text>: {defense}{"\n"}
             <Text style={{fontWeight:'bold', color: 'orange'}}>Magical Attack</Text>: {magicalAttack}{"\n"}
@@ -338,25 +360,76 @@ const Character = (props) => {
           </Text>
         </View>
       </View>
-
     </View>
-    // <Button
-    //   title="Clear"
-    //   onPress={() =>
-    //     clearAll()
-    //   }
-    // />
+  }
+
+  else {
+    if (characterName != '' && characterClass != '') {
+      characterView =
+      <View style={styles.container2}>
+	      <View style={{flex:1}}>
+          <View style={{flex:0.5}}>
+            <View style={{flex:1, flexDirection:'row'}}>
+              <View style={{flex:0.5}}>
+                <Text style={{fontSize:14, fontWeight:'bold'}}>
+                  {characterName}
+                </Text>
+              </View>
+              <View style={{flex:0.5}}>
+                <Text style={{fontSize:14}}>
+                  Lvl: {level}
+                </Text>
+              </View>
+            </View>
+          </View>
+          <View style={{flex:0.5}}>
+            <View style={{flex:1, flexDirection:'row'}}>
+              <View style={{flex:0.5}}>
+                <Text style={{fontSize:14, fontWeight:'bold', color:'green'}}>
+                  HP: {currHP}/{maxHP}
+                </Text>
+              </View>
+              <View style={{flex:0.5}}>
+                <Text style={{fontSize:14, fontWeight:'bold', color:'darkblue'}}>
+                  Mana: {currMana}/{maxMana}
+                </Text>
+              </View>
+            </View>
+          </View>
+   	    </View>
+
+        <View style={{flex:2.5}}>
+          <img
+          style={{width:'100%', height:'100%', backgroundColor:'lightgray'}}
+          src={imageList[imageListIndex]}
+          alt='new' />
+        </View>
+      </View>
+    }
+    else {
+      characterView =
+      <View style={{flex:1}}>
+      </View>
+    }
+  }
 
 
-
+  return (
+      characterView
   );
 }
 
 const styles = StyleSheet.create ({
   container: {
-    backgroundColor: 'darkgray',
+    backgroundColor: 'white',
     margin:"20px",
     padding:"20px",
+    border: 'solid black',
+  },
+  container2: {
+    backgroundColor: 'darkgray',
+    padding:"5px",
+    margin:"10px",
     border: 'solid black',
   },
 });
