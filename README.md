@@ -1,6 +1,8 @@
 # cs153aCPA-FantasyRPG
 Name: Fantasy Dungeon RPG
 
+Movie: https://brandeis.zoom.us/rec/share/fckYn1EFOwDGrz-zZwTyIf58jnfYfELAU3lPNrCXnTLsZf5n-7824a89TFjh3_8j.2cAEcY4uJxxtK_6L?startTime=1636695884000
+
   This app is designed to be a miniature dungeon RPG with a fantasy theme. At
 its core, the app is a sword-and-sorcery turn-based RPG. Currently, the player
 can choose their first character from a variety of options, and this character's
